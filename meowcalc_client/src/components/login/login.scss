@@ -1,0 +1,152 @@
+.App__login-background { 
+    width: 100%;
+    height: 100%; 
+
+    background-color: var(--dark-theme-tertiary); 
+}
+
+.login-background__login-modal-container { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+
+    position: absolute; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+
+    min-width: 450px;
+    min-height: 300px;
+
+    background-color: var(--dark-theme-secondary);
+
+    border-radius: 10px;
+    box-shadow: 0 0 8px 5px var(--dark-theme-quaternary);
+}
+
+.login-modal-container__login-modal { 
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+
+    width: 425px; 
+    height: 275px; 
+
+}
+
+.login-modal__header-container { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+
+    width: 100%;    
+    height: 140px;
+}
+
+.header-container__meow-apps-logo-container { 
+    background-image: url(./cat_pfp_product_11.JPG);
+    background-position: center;
+    background-size: contain;
+
+    width: 60px; 
+    height: 60px;
+
+    border-radius: 50%;
+
+    transition: transform 500ms ease;
+}
+
+.header-container__meow-apps-logo-container:hover { 
+    transform: rotate(360deg);
+}
+
+.header-container__sign-in-text-container { 
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 100%; 
+    height: 80px;
+}
+
+.sign-in-text-container__sign-in { 
+    font-size: 1.6rem;
+}
+
+.login-modal__content-container { 
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 100%; 
+    height: 135px;
+
+}
+
+.content-container__username-input { 
+    padding: 10px; 
+
+    width: 80%; 
+    height: 50px; 
+
+    color: var(--dark-theme-secondary);
+
+    font-size: 1.2rem;
+
+    border-radius: 10px; 
+    border-style: none; 
+}
+
+.content-container__options-horizontal-bar { 
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+
+    width: 80%; 
+    height: 30px;
+
+}
+
+.options-horizontal-bar__create-account {
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+
+    width: 150px; 
+    height: 100%;     
+}
+
+.create-account__create-account-text {  
+    transition: font-weight 250ms ease;    
+    cursor: pointer 
+}
+
+.create-account__create-account-text:hover { 
+    font-weight: bold;;
+}   
+
+.options-horizontal-bar__next { 
+    margin-left: auto;
+
+    width: 75px;
+    height: 100%;   
+
+    background-color: var(--purple); 
+
+    border-radius: 5px; 
+    border-style: none;
+
+    font-size: 1rem;
+
+    transition: filter 250ms ease;
+    transition: box-shadow 250ms ease;
+    cursor: pointer;    
+}
+
+.options-horizontal-bar__next:hover { 
+    filter: grayscale(0.1);
+    box-shadow: 0 0 5px 1px var(--dark-theme-quaternary);
+}
