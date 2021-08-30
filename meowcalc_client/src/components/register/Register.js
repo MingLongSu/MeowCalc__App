@@ -101,11 +101,17 @@ export default function Register() {
     // Adds a user to the user database of Meow Calc services
     async function registerUser() { 
         // Check value to ensure that username and password requirements are satisfied
-        const passedUserPassReq = checkUsername() && checkPassword() && checkConfirmationPassword();
+        const passwordCheck = checkPassword();
+        const confirmationPassowrdCheck = checkConfirmationPassword();
+        const usernameCheck = checkUsername()
 
-        console.log(passedUserPassReq)
+        console.log(passwordCheck); // TEST
+        console.log(confirmationPassowrdCheck); // TEST
+        console.log(usernameCheck); // TEST
 
-        if (passedUserPassReq) { 
+        const passedUserPassReq = usernameCheck && passwordCheck && confirmationPassowrdCheck; // SLIGHT BUG WITH THE USERNAME 
+
+        if (passedUserPassReq === true) { 
             Axios.post('http://localhost:3001/register-account', {
                 id: Math.floor(Math.random() * 1000),
                 username: username,
@@ -127,12 +133,14 @@ export default function Register() {
         }
 
         // Checks whether a username has any special characters and if the username has been taken
-        function checkUsername() {
+        async function checkUsername() {
             const specialChars = "<>@!#$%^&*()_+[]{}?:;|'\"\\,./~`-= ";
 
             const usernameNoSpecChar = (checkUsernameChars(0) && username !== '');
 
-            const usernameNotTaken = checkUsernameTaken(); // TEMP
+            const usernameNotTaken = checkUsernameTaken();
+
+            console.log(usernameNotTaken && usernameNoSpecChar);
 
             // Checks for spec chars
             function checkUsernameChars(iterator) { 
@@ -153,10 +161,22 @@ export default function Register() {
             }
 
             // Checks for username taken
-            function checkUsernameTaken() { 
-                setUsernameTaken(false);
+            async function checkUsernameTaken() { 
+                let userFound = false;
+                await Axios.post('http://localhost:3001/register-check-users', { username: username }).then((response) => { 
+                    userFound = response.data.userFound;
+                });
 
-                return true;
+                console.log(userFound); // ISSUE IS IN THIS AREA
+                // Checks if the user has been found
+                if (userFound) {
+                    setUsernameTaken(true);
+                    return false;
+                }
+                else { 
+                    setUsernameTaken(false);
+                    return true;
+                }
             }
 
             return usernameNoSpecChar && usernameNotTaken;
