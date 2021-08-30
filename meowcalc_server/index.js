@@ -34,8 +34,48 @@ app.post('/register-account', async (req, res) => {
         else { 
             console.log('user registered');
         }
-    })
-})
+    });
+});
+
+app.post('/register-check-users', (req, res) => { 
+    const username = req.body.username;
+
+    const checkMeowCalcUsers  = "SELECT * FROM users WHERE username = ?;";
+
+    meowcalc_auth_db.query(checkMeowCalcUsers, [username], (err, result) => { 
+        if (err) { 
+            res.send({ err: err })
+        }
+
+        // Handles when a user is found or not
+        if (result.length > 0) { // If found
+            res.send({ userFound: true })
+        }
+        else { // If not found
+            res.send({ userFound: false })
+        }
+    });
+});
+
+app.post('/login-check-users', (req, res) => { 
+    const username = req.body.username; 
+
+    const checkMeowCalcUsers = "SELECT * FROM users WHERE username = ?;";
+
+    meowcalc_auth_db.query(checkMeowCalcUsers, [username], (err, result) => { 
+        if (err) { 
+            res.send({ err: err });
+        }
+
+        if (result.length > 0) { 
+            res.send({ userFound: true });
+        }
+        else { 
+            res.send({ userFound: false });
+        }
+    });
+}); 
+
 
 app.listen(3001, () => { 
     console.log('server-side ready');

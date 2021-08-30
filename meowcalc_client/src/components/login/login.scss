@@ -32,6 +32,30 @@
 
     width: 425px; 
     height: 275px;
+
+    overflow: hidden;
+}
+
+.login-modal__slider-container { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+
+    width: 200%;
+    height: 100%;
+
+    transition: transform 500ms ease;
+
+    transform: translateX(212.5px);
+
+    &.onPasswordSlide { 
+        transform: translateX(-212.5px);
+    }
+}
+
+.slider-container__username-slide { 
+    width: 425px;
+    height: 100%; 
 }
 
 .login-modal__header-container { 
@@ -41,6 +65,7 @@
 
     width: 100%;    
     height: 140px;
+
 }
 
 .header-container__meow-apps-logo-container { 
@@ -74,7 +99,7 @@
     font-size: 1.6rem;
 }
 
-.login-modal__content-container { 
+.username-slide__content-container { 
     display: flex; 
     flex-direction: column;
     align-items: center;
@@ -85,7 +110,16 @@
 
 }
 
-.content-container__username-input { 
+.content-container__username-related-container { 
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    height: 80px;
+}
+
+.username-related-container__username-input { 
     padding: 10px; 
 
     width: 80%; 
@@ -97,6 +131,10 @@
 
     border-radius: 10px; 
     border-style: none; 
+
+    &.active { 
+        border: 2px solid var(--dark-pink);
+    }
 }
 
 .content-container__options-horizontal-bar { 
@@ -146,6 +184,111 @@
 }
 
 .options-horizontal-bar__next:hover { 
+    filter: grayscale(0.1);
+    box-shadow: 0 0 5px 1px var(--dark-theme-quaternary);
+}
+
+.slider-container__password-slide { 
+    width: 425px;
+    height: 100%; 
+}
+
+.password-slide__content-container { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 100%; 
+    height: 135px; 
+}
+
+.content-container__password-related-container { 
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+
+    width: 80%; 
+    height: 80px; 
+}
+
+.content-container__password-input { 
+    padding: 10px;
+
+    width: 100%; 
+    height: 50px;
+
+    color: var(--dark-theme-secondary);
+
+    font-size: 1.2rem;
+
+    border-radius: 10px;
+    border-style: none;
+}
+
+.password-related-container__show-password-horizontal-bar { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+
+    width: 100%;
+    height: 30px;
+}
+
+.show-password-horizontal-bar__show-password { 
+    width: 20px; 
+    height: 20px; 
+}
+
+.show-password-horizontal-bar__show-password-text { 
+    margin-left: 10px;
+}
+
+.content-container__options-horizontal-bar { 
+    width: 80%;
+    height: 30px; 
+}
+
+.options-horizontal-bar__previous {     
+    width: 100px;
+    height: 100%;
+
+    background-color: var(--purple);
+
+    font-size: 1rem;
+
+    border-radius: 5px;
+    border-style: none;
+
+    transition: filter 250ms ease;
+    transition: box-shadow 250ms ease;
+    cursor: pointer;
+}
+
+.options-horizontal-bar__previous:hover { 
+    filter: grayscale(0.1);
+    box-shadow: 0 0 5px 1px var(--dark-theme-quaternary);
+}
+
+.options-horizontal-bar__complete {
+    margin-left: auto;
+    
+    width: 100px;
+    height: 100%;
+
+    background-color: var(--purple);
+
+    font-size: 1rem;
+
+    border-radius: 5px;
+    border-style: none;
+
+    transition: filter 250ms ease;
+    transition: box-shadow 250ms ease;
+    cursor: pointer;
+}
+
+.options-horizontal-bar__complete:hover { 
     filter: grayscale(0.1);
     box-shadow: 0 0 5px 1px var(--dark-theme-quaternary);
 }
