@@ -4,6 +4,14 @@ import { useHistory } from 'react-router-dom';
 import './login.scss';
 
 export default function Login() {
+    // Changes the current page the user is on
+    const history = useHistory();
+
+    // Sends the user to the user-registry page
+    function toRegisterPage() {
+        history.push('/register');
+    }
+
     return (
         <div className='App__login-background'>
             <div className='login-background__login-modal-container'>
@@ -19,7 +27,7 @@ export default function Login() {
                         <input type='text' placeholder='Username' className='content-container__username-input'></input>
                         <div className='content-container__options-horizontal-bar'>
                             <div className='options-horizontal-bar__create-account'> 
-                                <span className='create-account__create-account-text'>
+                                <span onClick={ toRegisterPage } className='create-account__create-account-text'>
                                     Create account
                                 </span>
                             </div>
