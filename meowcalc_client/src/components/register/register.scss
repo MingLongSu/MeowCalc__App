@@ -298,6 +298,23 @@
     height: 30px; 
 }
 
+.register-option-horizontal-bar-1__horizontal-bar-1-login-container { 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+
+    width: 150px; 
+    height: 100%;   
+}
+
+.horizontal-bar-1-login-container__login-text { 
+    cursor: pointer;
+}
+
+.horizontal-bar-1-login-container__login-text:hover { 
+    font-weight: bold;
+}
+
 .register-option-horizontal-bar-1__next { 
     margin-left: auto; 
     margin-right: 10px;

@@ -34,10 +34,10 @@ export default function Register() {
     // Sets the display/hint message for the username field
     function updateUsernameHintText() { 
         if (usernameHasSymbol === true && usernameTaken === false) { 
-            return '*Username cannot consist of symbols or spaces'; 
+            return '*Username cannot be empty or have symbols or spaces'; 
         }
         else if (usernameHasSymbol === false && usernameTaken === true) { 
-            return '*Username has already been taken';
+            return '*Username already taken by another user';
         }
         else if (usernameHasSymbol === true && usernameTaken === true) { 
             return '*Username consists of symbols or spaces and has been taken';
@@ -105,10 +105,6 @@ export default function Register() {
         const confirmationPassowrdCheck = checkConfirmationPassword();
         const usernameCheck = checkUsername()
 
-        console.log(passwordCheck); // TEST
-        console.log(confirmationPassowrdCheck); // TEST
-        console.log(usernameCheck); // TEST
-
         const passedUserPassReq = usernameCheck && passwordCheck && confirmationPassowrdCheck; // SLIGHT BUG WITH THE USERNAME 
 
         if (passedUserPassReq === true) { 
@@ -133,14 +129,14 @@ export default function Register() {
         }
 
         // Checks whether a username has any special characters and if the username has been taken
-        async function checkUsername() {
+        function checkUsername() {
             const specialChars = "<>@!#$%^&*()_+[]{}?:;|'\"\\,./~`-= ";
 
-            const usernameNoSpecChar = (checkUsernameChars(0) && username !== '');
+            const usernameNoSpecChar = checkUsernameChars(0);
 
             const usernameNotTaken = checkUsernameTaken();
 
-            console.log(usernameNotTaken && usernameNoSpecChar);
+            const usernameNotEmpty = checkUsernameEmpty();
 
             // Checks for spec chars
             function checkUsernameChars(iterator) { 
@@ -159,27 +155,32 @@ export default function Register() {
                     return true; 
                 }
             }
+            
+            function checkUsernameTaken() { // COME BACK TO LATER
+                Axios.post('http://localhost:3001/register-check-users', { 
+                    username: username 
+                }).then((result) => { 
+                    const userFound = result.data.userFound;
 
-            // Checks for username taken
-            async function checkUsernameTaken() { 
-                let userFound = false;
-                await Axios.post('http://localhost:3001/register-check-users', { username: username }).then((response) => { 
-                    userFound = response.data.userFound;
+                    setUsernameTaken(userFound);
                 });
+            }
 
-                console.log(userFound); // ISSUE IS IN THIS AREA
-                // Checks if the user has been found
-                if (userFound) {
-                    setUsernameTaken(true);
+            // If the username is an empty string
+            function checkUsernameEmpty() { 
+                if (username === '') { 
+                    setUsernameHasSymbol(true);
+
                     return false;
                 }
                 else { 
-                    setUsernameTaken(false);
+                    setUsernameHasSymbol(false);
+
                     return true;
                 }
             }
 
-            return usernameNoSpecChar && usernameNotTaken;
+            return usernameNoSpecChar && usernameNotTaken && usernameNotEmpty;
         }
 
         // Checks whether the passoword is greater than 8 chars long
@@ -199,6 +200,10 @@ export default function Register() {
 
             return passwordMatchFound;
         }
+    }
+
+    function toLoginPage() {
+        history.push('/login');
     }
 
     return (
@@ -231,6 +236,9 @@ export default function Register() {
                                     <div className='password-visibility-container__password-visibility-hint'> Show password </div>
                                 </div>
                                 <div className='register-content-container__register-option-horizontal-bar-1'>
+                                    <div className='register-option-horizontal-bar-1__horizontal-bar-1-login-container'>  
+                                        <span onClick={ toLoginPage } className='horizontal-bar-1-login-container__login-text'> Sign in </span>
+                                    </div>
                                     <button onClick={ registerUser } className='register-option-horizontal-bar-1__next'> Complete </button>
                                 </div>
                             </div>
