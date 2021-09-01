@@ -16,7 +16,7 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path='/'> <Dashboard loggedIn={ loggedIn } setLoggedIn={ setLoggedIn } /> </Route>
-          <Route exact path='/login'> <Login /> </Route>
+          <Route exact path='/login'> <Login loggedIn={ loggedIn } setLoggedIn={ setLoggedIn } /> </Route>
           <Route exact path='/register'> <Register /> </Route>
         </Switch>
       </div>

@@ -4,8 +4,9 @@ import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 
 import './login.scss';
+import localStorageAPI from '../../localStorageAPI';
 
-export default function Login() {
+export default function Login({ loggedIn, setLoggedIn }) {
     // Changes the current page the user is on
     const history = useHistory();
 
@@ -17,6 +18,7 @@ export default function Login() {
 
     // Value for the input fields of the username and password
     const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     // Status of the username input field
     const [usernameFound, setUsernameFound] = useState(true);
@@ -58,9 +60,33 @@ export default function Login() {
         }
     }
 
-    // Updates the current value of the password
+    // Updates the current value of the username
     function updateUsername(e) {
         setUsername(e.target.value);
+    }
+
+    // Updates the current value of the password 
+    function updatePassword(e) { 
+        setPassword(e.target.value);
+    }
+
+    // Attempts to log in the current user
+    function loginUser() { 
+        Axios.post('http://localhost:3001/login-check-credentials', { 
+            username: username, 
+            password: password 
+        }).then((result) => { 
+            if (result.data.loginSuccessful === true) { 
+                localStorageAPI.setCurrentSessionUser(result.data.userId);
+            }
+
+            setLoggedIn(result.data.loginSuccessful);
+        });
+    }
+
+    // If currently logged in, redirects user to the dashboard
+    if (loggedIn === true) {
+        history.push(`/`); // NEEDS FIXING
     }
 
     return (
@@ -93,7 +119,7 @@ export default function Login() {
                         <div className='slider-container__password-slide'>
                             <div className='password-slide__content-container'>
                                 <div className='content-container__password-related-container'>
-                                    <input type={ passwordVisible } placeholder='Password' className='content-container__password-input'></input>
+                                    <input onChange={ updatePassword } type={ passwordVisible } placeholder='Password' className='content-container__password-input'></input>
                                     <div className='password-related-container__show-password-horizontal-bar'>
                                         <input onChange={ showPassword } type='checkbox' className='show-password-horizontal-bar__show-password'></input>
                                         <div className='show-password-horizontal-bar__show-password-text'> Show password </div>
@@ -101,7 +127,7 @@ export default function Login() {
                                 </div>
                                 <div className='content-container__options-horizontal-bar'>
                                     <button onClick={ toUsernameSlide } className='options-horizontal-bar__previous'> Previous </button>
-                                    <button className='options-horizontal-bar__complete'> Complete </button>
+                                    <button onClick={ loginUser } className='options-horizontal-bar__complete'> Complete </button>
                                 </div>
                             </div>
                         </div>

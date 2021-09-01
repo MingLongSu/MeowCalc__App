@@ -76,6 +76,44 @@ app.post('/login-check-users', (req, res) => {
     });
 }); 
 
+app.post('/login-check-credentials', (req, res) => { 
+    const salt = 5; 
+
+    const username = req.body.username;
+    const password = req.body.password;
+    
+    const checkMeowCalcUsers = "SELECT * FROM users WHERE username = ?;";
+
+    meowcalc_auth_db.query(checkMeowCalcUsers, [username], (err, usernameResult) => { 
+        if (err) {
+            res.send({ err: err }); 
+        }
+
+        if (usernameResult.length > 0) { 
+            usernameResult.forEach(user => { 
+                
+                bcrypt.compare(password, user.password, async (err, passwordResult) => { 
+                    if (err) { 
+                        res.send({ err });
+                    }
+
+                    if (passwordResult > 0) { 
+                        res.send({  
+                            loginSuccessful: true, 
+                            userId: await bcrypt.hash(user.id.toString(), salt)
+                        });
+                    }
+                    else { 
+                        res.send({ 
+                            loginSuccessful: false
+                        });
+                    }
+                });
+            }); 
+        }
+    });
+}); 
+
 
 app.listen(3001, () => { 
     console.log('server-side ready');
