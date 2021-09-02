@@ -78,16 +78,20 @@ export default function Login({ loggedIn, setLoggedIn }) {
         }).then((result) => { 
             if (result.data.loginSuccessful === true) { 
                 localStorageAPI.setCurrentSessionUser(result.data.userId);
+
+                history.push('/');
             }
 
             setLoggedIn(result.data.loginSuccessful);
         });
     }
 
+    /*
     // If currently logged in, redirects user to the dashboard
     if (loggedIn === true) {
         history.push(`/`); // NEEDS FIXING
     }
+    */
 
     return (
         <div className='App__login-background'>

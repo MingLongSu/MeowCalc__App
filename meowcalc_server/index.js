@@ -2,12 +2,22 @@ const express = require('express');
 const app = express();
 
 const mysql = require('mysql');
-
 const cors = require('cors');
-
 const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser'); 
+const cookieParser = require('cookie-parser');
+const expressSession = require('express-session');
 
-app.use(cors());
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3000/login', 'http://localhost:3000/register'],
+    methods: ['GET', 'POST'], 
+    credentials: true
+}));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSession({
+    
+}))
 app.use(express.json());
 
 const meowcalc_auth_db = mysql.createConnection({
@@ -25,7 +35,7 @@ app.post('/register-account', async (req, res) => {
     const password = await bcrypt.hash(req.body.password, salt);
     const lastLogin = req.body.lastLogin;
 
-    const insertToTable = 'INSERT INTO users (id, username, password, lastLogin) VALUES (?, ?, ?, ?);'
+    const insertToTable = 'INSERT INTO users (id, username, password, lastLogin) VALUES (?, ?, ?, ?);';
 
     meowcalc_auth_db.query(insertToTable, [id, username, password, lastLogin], (err, result) => {
         if (err) { 
@@ -91,7 +101,6 @@ app.post('/login-check-credentials', (req, res) => {
 
         if (usernameResult.length > 0) { 
             usernameResult.forEach(user => { 
-                
                 bcrypt.compare(password, user.password, async (err, passwordResult) => { 
                     if (err) { 
                         res.send({ err });
