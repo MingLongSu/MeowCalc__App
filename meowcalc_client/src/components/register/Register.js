@@ -103,9 +103,17 @@ export default function Register() {
         // Check value to ensure that username and password requirements are satisfied
         const passwordCheck = checkPassword();
         const confirmationPassowrdCheck = checkConfirmationPassword();
-        const usernameCheck = checkUsername()
+        let usernameCheck = false;
+        
+        await checkUsername().then((result) => { 
+            usernameCheck = result;
+        })
+
+        console.log(usernameCheck);
 
         const passedUserPassReq = usernameCheck && passwordCheck && confirmationPassowrdCheck; // SLIGHT BUG WITH THE USERNAME 
+
+        console.log(passedUserPassReq);
 
         if (passedUserPassReq === true) { 
             Axios.post('http://localhost:3001/register-account', {
@@ -129,12 +137,16 @@ export default function Register() {
         }
 
         // Checks whether a username has any special characters and if the username has been taken
-        function checkUsername() {
+        async function checkUsername() {
             const specialChars = "<>@!#$%^&*()_+[]{}?:;|'\"\\,./~`-= ";
 
             const usernameNoSpecChar = checkUsernameChars(0);
 
-            const usernameNotTaken = checkUsernameTaken();
+            let usernameNotTaken = false;
+
+            await checkUsernameTaken().then((result) => { 
+                usernameNotTaken = result;
+            });
 
             const usernameNotEmpty = checkUsernameEmpty();
 
@@ -156,14 +168,18 @@ export default function Register() {
                 }
             }
             
-            function checkUsernameTaken() { // COME BACK TO LATER
-                Axios.post('http://localhost:3001/register-check-users', { 
+            async function checkUsernameTaken() { // COME BACK TO LATER
+                let userFound = false;
+
+                await Axios.post('http://localhost:3001/register-check-users', { 
                     username: username 
                 }).then((result) => { 
-                    const userFound = result.data.userFound;
+                    userFound = result.data.userFound;
 
                     setUsernameTaken(userFound);
                 });
+
+                return !userFound; 
             }
 
             // If the username is an empty string
