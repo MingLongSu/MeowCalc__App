@@ -5,6 +5,7 @@ import Axios from 'axios';
 
 import './dashboard.scss';
 import Topbar from './topbar/Topbar';
+import Bottombar from './bottombar/Bottombar';
 
 //import localStorageAPI from '../../localStorageAPI';
 
@@ -33,6 +34,9 @@ export default function Dashboard({ loggedIn, setLoggedIn }) {
         <div className='App__dashboard-background'>
             <div className='dashboard-background__topbar-container'>
                 <Topbar />
+            </div>
+            <div className='dashboard-background__bottombar-container'>
+                <Bottombar />
             </div>
         </div>
     )

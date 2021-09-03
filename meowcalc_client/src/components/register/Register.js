@@ -125,7 +125,7 @@ export default function Register() {
             setIsRegistered(true);
 
             // Waits for the registration animation to play through
-            await sleep(1500); 
+            await sleep(2000); 
 
             // Returns user to login page
             history.push('/login');
