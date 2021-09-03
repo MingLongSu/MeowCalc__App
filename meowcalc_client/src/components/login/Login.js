@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Axios from 'axios';
@@ -7,6 +7,9 @@ import './login.scss';
 import localStorageAPI from '../../localStorageAPI';
 
 export default function Login({ loggedIn, setLoggedIn }) {
+    // Setting up Axios credentials
+    Axios.defaults.withCredentials = true;
+
     // Changes the current page the user is on
     const history = useHistory();
 
@@ -25,7 +28,7 @@ export default function Login({ loggedIn, setLoggedIn }) {
 
     // Sends the user to the user-registry page
     function toRegisterPage() {
-        history.push('/register');
+        history.push('/register'); 
     }
 
     // Sends the user to the password slide
@@ -77,9 +80,9 @@ export default function Login({ loggedIn, setLoggedIn }) {
             password: password 
         }).then((result) => { 
             if (result.data.loginSuccessful === true) { 
-                localStorageAPI.setCurrentSessionUser(result.data.userId);
+                //localStorageAPI.setCurrentSessionUser(result.data.userId);
 
-                history.push('/');
+                //history.push('/');
             }
 
             setLoggedIn(result.data.loginSuccessful);
@@ -89,9 +92,23 @@ export default function Login({ loggedIn, setLoggedIn }) {
     /*
     // If currently logged in, redirects user to the dashboard
     if (loggedIn === true) {
-        history.push(`/`); // NEEDS FIXING
+        history.push(`/`); // MIGHT ACTUALLY STILL BE USEFUL
     }
     */
+
+    useEffect(() => {
+        checkSession();
+
+        async function checkSession() { 
+            await Axios.get('http://localhost:3001/login-check-credentials').then((result) => {
+                if (result.data.loggedIn) { 
+                    console.log(result) // TEST
+
+                    history.push('/');
+                }
+            });
+        }
+    }, []);
 
     return (
         <div className='App__login-background'>

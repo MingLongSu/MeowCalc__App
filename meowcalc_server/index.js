@@ -16,7 +16,13 @@ app.use(cors({
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession({
-    
+    key: 'userId', 
+    secret: `${ ENV_SECRET }`, 
+    resave: false,
+    saveUninitialized: false, 
+    cookie: {
+        expires: 60 * 60 * 24,
+    }
 }))
 app.use(express.json());
 
@@ -107,6 +113,8 @@ app.post('/login-check-credentials', (req, res) => {
                     }
 
                     if (passwordResult > 0) { 
+                        req.session.user = usernameResult;
+
                         res.send({  
                             loginSuccessful: true, 
                             userId: await bcrypt.hash(user.id.toString(), salt)
@@ -122,6 +130,15 @@ app.post('/login-check-credentials', (req, res) => {
         }
     });
 }); 
+
+app.get('/login-check-credentials', (req, res) => {
+    if (req.session.user) { 
+        res.send({ loggedIn: true, user: req.session.user });
+    }
+    else { 
+        res.send({ loggedIn: false });
+    }
+});
 
 
 app.listen(3001, () => { 
