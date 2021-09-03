@@ -1,0 +1,17 @@
+.App__dashboard-background { 
+    width: 100%; 
+    height: 100%; 
+
+    background-color: var(--dark-theme-tertiary);
+}
+
+.dashboard-background__topbar-container { 
+    width: 100%; 
+    height: 60px;
+
+    background-color: var(--dark-theme-secondary);
+
+    border-radius: 0 0 15px 15px;
+
+    box-shadow: 0 0 8px 5px var(--dark-theme-quaternary);
+}

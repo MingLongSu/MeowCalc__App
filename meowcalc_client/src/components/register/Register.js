@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Axios from 'axios';
@@ -6,6 +6,9 @@ import Axios from 'axios';
 import './register.scss';
 
 export default function Register() {
+    // Setting Axios credentials
+    Axios.defaults.withCredentials = true;
+
     // Status for the visibility of the password field's input
     const [passwordVisible, setPasswordVisible] = useState('password');
 
@@ -109,11 +112,7 @@ export default function Register() {
             usernameCheck = result;
         })
 
-        console.log(usernameCheck);
-
         const passedUserPassReq = usernameCheck && passwordCheck && confirmationPassowrdCheck; // SLIGHT BUG WITH THE USERNAME 
-
-        console.log(passedUserPassReq);
 
         if (passedUserPassReq === true) { 
             Axios.post('http://localhost:3001/register-account', {
@@ -221,6 +220,19 @@ export default function Register() {
     function toLoginPage() {
         history.push('/login');
     }
+
+    useEffect(() => { 
+        checkSession();
+
+        async function checkSession() { 
+            await Axios.get('http://localhost:3001/login-check-credentials').then((result) => { 
+                if (result.data.loggedIn) { 
+                    console.log(result); // TEST
+                    history.push('/');
+                }
+            });
+        }
+    }, []);
 
     return (
         <div className='App_register-background'>
