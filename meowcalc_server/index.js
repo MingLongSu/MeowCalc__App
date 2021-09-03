@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressSession({
     key: 'userId', 
-    secret: `${ ENV_SECRET }`, 
+    secret: `temp`, 
     resave: false,
     saveUninitialized: false, 
     cookie: {

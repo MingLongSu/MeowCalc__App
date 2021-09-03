@@ -34,6 +34,9 @@ export default function Dashboard({ loggedIn, setLoggedIn }) {
             <div className='dashboard-background__topbar-container'>
                 <Topbar />
             </div>
+            <div className='dashboard-background__bottombar-container'>
+                
+            </div>
         </div>
     )
 }
