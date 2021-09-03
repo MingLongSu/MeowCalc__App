@@ -60,6 +60,11 @@
 
     transition: filter 250ms ease;
     transition: box-shadow 250ms ease;
+
+    &.active { // TEMP 
+        filter: grayscale(0);
+        box-shadow: 0 0 5px 2px var(--dark-theme-quaternary);
+    }
 }
 
 .user-related-container__user-display-container:hover { 

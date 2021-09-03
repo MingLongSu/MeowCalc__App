@@ -14,7 +14,7 @@ export default function Topbar() {
         <div className='topbar-container__components-container'>
             <div className='components-container__meow-apps-logo-container'></div>
             <div className='components-container__user-related-container'>
-                <div onClick={ updateOpenUserOptions } className='user-related-container__user-display-container'>
+                <div onClick={ updateOpenUserOptions } className={'user-related-container__user-display-container' + (openUserOption ? ' active' : '')}>
                     <div className='user-display-container__user-profile-picture-container'>
                         
                     </div>
