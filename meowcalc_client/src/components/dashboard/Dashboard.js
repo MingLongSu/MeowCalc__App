@@ -7,8 +7,6 @@ import './dashboard.scss';
 import Topbar from './topbar/Topbar';
 import Bottombar from './bottombar/Bottombar';
 
-//import localStorageAPI from '../../localStorageAPI';
-
 export default function Dashboard({ loggedIn, setLoggedIn }) {
     // Setting defaults for axios
     Axios.defaults.withCredentials = true;
@@ -23,7 +21,7 @@ export default function Dashboard({ loggedIn, setLoggedIn }) {
             await Axios.get('http://localhost:3001/login-check-credentials').then((result) => { 
                 if (!result.data.loggedIn) { 
                     history.push('/login');
-                    console.log('occurred')
+                    console.log('occurred') // TEST
                 } 
                  
             });

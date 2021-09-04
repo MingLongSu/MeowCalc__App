@@ -119,7 +119,8 @@ export default function Register() {
                 id: Math.floor(Math.random() * 1000),
                 username: username,
                 password: password, 
-                lastLogin: new Date().toISOString()
+                lastLogin: new Date().toISOString(), 
+                profilePicture: ''
             });         
 
             setIsRegistered(true);
@@ -167,7 +168,7 @@ export default function Register() {
                 }
             }
             
-            async function checkUsernameTaken() { // COME BACK TO LATER
+            async function checkUsernameTaken() { 
                 let userFound = false;
 
                 await Axios.post('http://localhost:3001/register-check-users', { 

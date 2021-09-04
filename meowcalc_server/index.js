@@ -21,7 +21,7 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false, 
     cookie: {
-        expires: 60 * 60 * 24,
+        expires: 1000 * 60 * 60 * 24,
     }
 }))
 app.use(express.json());
@@ -40,10 +40,11 @@ app.post('/register-account', async (req, res) => {
     const username = req.body.username;
     const password = await bcrypt.hash(req.body.password, salt);
     const lastLogin = req.body.lastLogin;
+    const profilePicture = req.body.profilePicture;
 
-    const insertToTable = 'INSERT INTO users (id, username, password, lastLogin) VALUES (?, ?, ?, ?);';
+    const insertToTable = 'INSERT INTO users (id, username, password, lastLogin, profilePicture) VALUES (?, ?, ?, ?, ?);';
 
-    meowcalc_auth_db.query(insertToTable, [id, username, password, lastLogin], (err, result) => {
+    meowcalc_auth_db.query(insertToTable, [id, username, password, lastLogin, profilePicture], (err, result) => {
         if (err) { 
             console.log(err);
         }
@@ -140,8 +141,47 @@ app.get('/login-check-credentials', (req, res) => {
     }
 });
 
+app.post('/update-profile-picture', (req, res) => { 
+    const id = req.body.id; 
+    const readerResult = req.body.readerResult;
+
+    const updateProfilePicture = "UPDATE users SET profilePicture = ? WHERE id = ?;";
+
+    meowcalc_auth_db.query(updateProfilePicture, [readerResult, id], (err, result) => { 
+        if (err) { 
+            console.log(err);
+        }
+        else {
+            console.log('profile-picture-updated');
+        }
+    });
+});
+
+app.post('/get-public-acc-details', (req, res) => { 
+    const id = req.body.id; 
+
+    const selectStatement = "SELECT username, lastLogin, profilePicture FROM users WHERE id = ?;";
+
+    meowcalc_auth_db.query(selectStatement, [id], (err, result) => { 
+        if (err) { 
+            res.send({ err: err });
+        }
+
+        if (result.length > 0) { 
+            res.send({ 
+                detailsFound: true, 
+                pubDetails: result
+            });
+        }
+        else { 
+            res.send({ 
+                detailsFound: false
+             })
+        }
+    });
+});
 
 app.listen(3001, () => { 
     console.log('server-side ready');
-})
+});
 
