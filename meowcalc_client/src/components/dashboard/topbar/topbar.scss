@@ -79,8 +79,9 @@
     margin-left: 5px;
 
     background-image: url(https://i.pinimg.com/736x/10/91/94/1091948c6b80b65b9eef8c163f0ae42a.jpg); // Adjustable
-    background-size: contain;
+    background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
 
     border-radius: 50%;
 
@@ -191,6 +192,10 @@
     font-size: 1.2rem;
 }
 
+.change-profile-pic-option__file-prompt { 
+    display: none;
+}
+
 .options-container__view-last-log-in-option { 
     display: flex; 
     flex-direction: row;
@@ -205,6 +210,12 @@
     margin-right: 10px;
 
     font-size: 1.8rem;
+}
+
+.view-last-log-in-option__text { 
+    margin-right: 10px;
+
+    font-size: 1.2rem;
 }
 
 #options-container__options { 

@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
 
 import './login.scss';
-import localStorageAPI from '../../localStorageAPI';
 
 export default function Login({ loggedIn, setLoggedIn }) {
     // Setting up Axios credentials
@@ -80,7 +79,6 @@ export default function Login({ loggedIn, setLoggedIn }) {
             password: password 
         }).then((result) => { 
             if (result.data.loginSuccessful === true) { 
-                //localStorageAPI.setCurrentSessionUser(result.data.userId);
 
                 //history.push('/');
             }
