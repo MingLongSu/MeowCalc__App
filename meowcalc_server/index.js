@@ -181,6 +181,35 @@ app.post('/get-public-acc-details', (req, res) => {
     });
 });
 
+app.post('/register-history-dest', (req, res) => {
+    const id = req.body.id;
+    const historyDest = req.body.historyDest;
+
+    const insertHistoryDest = "INSERT INTO history_dests (id, historyDest) VALUES (?, ?);";
+                              
+    meowcalc_auth_db.query(insertHistoryDest, [id, historyDest], (err, result) => { 
+        if (err) { 
+            console.log(err);
+        }
+        
+        if (result) { 
+            console.log('history dest added');
+        }
+    });
+
+    const createNewHistoryTable = `CREATE TABLE ${ historyDest } (calculation VARCHAR(255) NOT NULL, calculationDate VARCHAR(255) NOT NULL);`;
+
+    meowcalc_auth_db.query(createNewHistoryTable, [], (err, result) => { 
+        if (err) { 
+            console.log(err);
+        }
+
+        if (result) { 
+            console.log('user history table added')
+        }
+    });
+});
+
 app.listen(3001, () => { 
     console.log('server-side ready');
 });

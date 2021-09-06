@@ -114,14 +114,23 @@ export default function Register() {
 
         const passedUserPassReq = usernameCheck && passwordCheck && confirmationPassowrdCheck; // SLIGHT BUG WITH THE USERNAME 
 
-        if (passedUserPassReq === true) { 
+        if (passedUserPassReq === true) {  
+            const userId = Math.floor(Math.random() * 1000);
+            
+            // Adds the user to the database
             Axios.post('http://localhost:3001/register-account', {
-                id: Math.floor(Math.random() * 1000),
+                id: userId,
                 username: username,
                 password: password, 
                 lastLogin: new Date().toISOString(), 
                 profilePicture: ''
             });         
+
+            // Adds the user id to the historyDests table
+            Axios.post('http://localhost:3001/register-history-dest', {
+                id: userId,
+                historyDest: `calcHistory_${ userId }`
+            });
 
             setIsRegistered(true);
 
