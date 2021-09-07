@@ -197,7 +197,7 @@ app.post('/register-history-dest', (req, res) => {
         }
     });
 
-    const createNewHistoryTable = `CREATE TABLE ${ historyDest } (calculation VARCHAR(255) NOT NULL, calculationDate VARCHAR(255) NOT NULL);`;
+    const createNewHistoryTable = `CREATE TABLE ${ historyDest } (calculation VARCHAR(255) NOT NULL, currentOperand VARCHAR(255) NOT NULL, calculationDate VARCHAR(255) NOT NULL);`;
 
     meowcalc_auth_db.query(createNewHistoryTable, [], (err, result) => { 
         if (err) { 
@@ -208,6 +208,41 @@ app.post('/register-history-dest', (req, res) => {
             console.log('user history table added')
         }
     });
+});
+
+app.post('/get-user-table', (req, res) => { 
+    const id = req.body.id;
+
+    const selectUserTable = "SELECT historyDest FROM history_dests WHERE id = ?;"; 
+                           // "SELECT username, lastLogin, profilePicture FROM users WHERE id = ?;";
+    meowcalc_auth_db.query(selectUserTable, [id], (err, result) => { 
+        if (err) { 
+            res.send({ err: err });
+        }
+
+        if (result.length > 0) { 
+            res.send({ userTable: result });
+        }
+    });
+});
+
+app.post('/history-add-calculation', (req, res) => { 
+    const userTable = req.body.userTable;
+    const calculation = req.body.calculation;
+    const currentOperand = req.body.currentOperand;
+    const calculationDate = req.body.calculationDate;
+
+    const updateHistory = `INSERT INTO ${ userTable } (calculation, currentOperand, calculationDate) VALUES (?, ?, ?);`;
+
+    meowcalc_auth_db.query(updateHistory, [calculation, currentOperand, calculationDate], (err, result) => {
+        if (err) { 
+            console.log(err);
+        }
+
+        if (result) { 
+            console.log('Updated');
+        }
+    }); 
 });
 
 app.listen(3001, () => { 

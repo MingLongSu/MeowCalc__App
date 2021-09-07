@@ -39,8 +39,16 @@
 }
 
 .output-container__prev-operation-container { 
+    padding: 10px;
+
     width: 780px;
     height: 35px;
+
+    text-align: right;
+
+    font-size: 1.4rem;  
+
+    user-select: none;
 }
 
 .output-container__current-operation-container { 
@@ -56,7 +64,9 @@
     border-radius: 0 0 5px 5px;
     border-style: none;
 
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+
+    user-select: none;
 }
 
 .pads-container__divider { 
