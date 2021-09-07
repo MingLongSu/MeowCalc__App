@@ -237,7 +237,6 @@ export default function Register() {
         async function checkSession() { 
             await Axios.get('http://localhost:3001/login-check-credentials').then((result) => { 
                 if (result.data.loggedIn) { 
-                    console.log(result); // TEST
                     history.push('/');
                 }
             });

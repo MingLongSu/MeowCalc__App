@@ -4,12 +4,12 @@ import Axios from 'axios';
 
 import './bottombar.scss';
 
-export default function Bottombar() {
+export default function Bottombar() {   
     // Current session user
     const [userTable, setUserTable] = useState('');
 
     // Current ans
-    const [ans, setAns] = useState('');
+    const [answer, setAnswer] = useState(0);
 
     // Calculator input value
     const [prevCalculatorInput, setPrevCalculatorInput] = useState('');
@@ -43,6 +43,18 @@ export default function Bottombar() {
         });
     }
 
+    function ans() { 
+        setCalculatorInput(prevInput => { 
+            return answer;
+        })
+    }
+
+    function pi() { 
+        setCalculatorInput(prevInput => { 
+            return Math.PI;
+        });
+    }
+
     function del() { 
         if (calculatorInput.length > 0) { 
             setCalculatorInput(prevInput => { 
@@ -56,43 +68,50 @@ export default function Bottombar() {
     }
 
     function equals() { 
-        const firstValue = parseFloat(prevCalculatorInput.split()[0].trim());
-        const secondValue = parseFloat(calculatorInput.trim());
+        if (prevCalculatorInput !== '') { 
+            const firstValue = parseFloat(prevCalculatorInput.split()[0].trim());
+            const secondValue = parseFloat(calculatorInput.trim());
 
-        setCalculatorInput(() => {
-            // TO DO: SEND AN AXIOS POST TO PLACE IN THE HISTORY OF THE USER 
-            Axios.post('http://localhost:3001/history-add-calculation', { 
-                userTable: userTable,
-                calculation: `${ firstValue } ${ currentOperand } ${ secondValue }`,
-                currentOperand: currentOperand,
-                calculationDate: new Date().toISOString()
-            });
+            setCalculatorInput(() => {
+                // TO DO: SEND AN AXIOS POST TO PLACE IN THE HISTORY OF THE USER 
+                Axios.post('http://localhost:3001/history-add-calculation', { 
+                    userTable: userTable,
+                    calculation: `${ firstValue } ${ currentOperand } ${ secondValue }`,
+                    currentOperand: currentOperand,
+                    calculationDate: new Date().toISOString()
+                });
+        
+                setPrevCalculatorInput('');
+        
+                let result = '';
+                switch(currentOperand) { 
+                    case '+':
+                        result = (firstValue + secondValue).toString();
+                        break;
+                    case '-':
+                        result = (firstValue - secondValue).toString();
+                        break;
+                    case '/':
+                        result = (firstValue / secondValue).toString();
+                        break;
+                    case '*':
+                        result = (firstValue * secondValue).toString();
+                        break;
+                }
+        
+                setCurrentOperand('');
 
-            setPrevCalculatorInput('');
-
-            let result = '';
-            switch(currentOperand) { 
-                case '+':
-                    result = (firstValue + secondValue).toString();
-                    break;
-                case '-':
-                    result = (firstValue - secondValue).toString();
-                    break;
-                case '/':
-                    result = (firstValue / secondValue).toString();
-                    break;
-                case '*':
-                    result = (firstValue * secondValue).toString();
-                    break;
-            }
-
-            if (result.indexOf('.') !== -1 ) { 
-                return result.split('.')[1].trim().length > 3 ? (Math.round(parseFloat(result)  * 1000)).toString() / 1000 : result;
-            }
-            else { 
-                return result;
-            }
-        });
+                if (result.indexOf('.') !== -1 ) { 
+                    const ans = result.split('.')[1].trim().length > 3 ? (Math.round(parseFloat(result)  * 1000)).toString() / 1000 : result;
+                    setAnswer(ans);
+                    return ans;
+                }
+                else { 
+                    setAnswer(result);
+                    return result;
+                }
+            });    
+        }   
     }
 
     // UTILITY
@@ -121,22 +140,9 @@ export default function Bottombar() {
                 </div>
                 <div className='calculator-container__divider'></div>
                 <div className='calculator-container__pads-container'>
-                    <div className='pads-container__special-operators-container'>
-                        <button onClick={ operatorPad } className='special-operators-container__pi'> &#960; </button>
-                        <button onClick={ operatorPad } className='special-operators-container__x!'> x! </button>
-                        <button onClick={ operatorPad } className='special-operators-container__sin()' id='withParams'> sin </button>
-                        <button onClick={ operatorPad } className='special-operators-container__In()' id='withParams'> In </button>
-                        <button onClick={ operatorPad } className='special-operators-container__cos()' id='withParams'> cos </button>
-                        <button onClick={ operatorPad } className='special-operators-container__log()' id='withParams'> log </button>
-                        <button onClick={ operatorPad } className='special-operators-container__tan()' id='withParams'> tan </button>
-                        <button onClick={ operatorPad } className='special-operators-container__sqrt()' id='withParams'> &#8730; </button>
-                        <button onClick={ operatorPad } className='special-operators-container__ans'> &#x25; </button>
-                        <button onClick={ operatorPad } className='special-operators-container__x^y' id='withParams'> x<sup>y</sup> </button>
-                    </div>
-                    <div className='pads-container__divider'></div>
                     <div className='pads-container__default-operators-container'>
-                        <button onClick={ operatorPad } className='default-operators-container__parenthesis-right'> &#40; </button>
-                        <button onClick={ operatorPad } className='default-operators-container__parenthesis-left'> &#41; </button>
+                        <button onClick={ ans } className='default-operators-container__pi'> Ans </button>
+                        <button onClick={ pi } className='default-operators-container__Ans'> &#960; </button>
                         <button onClick={ del } className='default-operators-container__del'>CE</button>
                         <button onClick={ clr } className='default-operators-container__clr'>C</button>
                         <button onClick={ numberPad } className='default-operators-container__7'>7</button>

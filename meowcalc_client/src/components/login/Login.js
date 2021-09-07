@@ -80,19 +80,12 @@ export default function Login({ loggedIn, setLoggedIn }) {
         }).then((result) => { 
             if (result.data.loginSuccessful === true) { 
 
-                //history.push('/');
+                history.push('/');
             }
 
             setLoggedIn(result.data.loginSuccessful);
         });
     }
-
-    /*
-    // If currently logged in, redirects user to the dashboard
-    if (loggedIn === true) {
-        history.push(`/`); // MIGHT ACTUALLY STILL BE USEFUL
-    }
-    */
 
     useEffect(() => {
         checkSession();
@@ -100,7 +93,6 @@ export default function Login({ loggedIn, setLoggedIn }) {
         async function checkSession() { 
             await Axios.get('http://localhost:3001/login-check-credentials').then((result) => {
                 if (result.data.loggedIn) { 
-                    console.log(result) // TEST
 
                     history.push('/');
                 }

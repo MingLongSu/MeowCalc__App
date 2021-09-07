@@ -21,7 +21,6 @@ export default function Dashboard({ loggedIn, setLoggedIn }) {
             await Axios.get('http://localhost:3001/login-check-credentials').then((result) => { 
                 if (!result.data.loggedIn) { 
                     history.push('/login');
-                    console.log('occurred') // TEST
                 } 
                  
             });
