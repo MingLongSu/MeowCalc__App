@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import Axios from 'axios';
 
 import './topbar.scss';
 
 export default function Topbar() {
+    // Changes the current page the user is on
+    const history = useHistory();
+
     // Refers to the file button
     const filePrompt = useRef();
-
-    // Creates a reference to the profile picture div
-    const profilePicture = useRef();
 
     // Controls the status of the last login text display
     const [lastLoginText, setLastLoginText] = useState('Last login');
@@ -70,6 +71,13 @@ export default function Topbar() {
         });
     } 
 
+    function logout() { 
+        console.log('logging out')
+        Axios.get('http://localhost:3001/logout').then((result) => { 
+            history.push('/login');
+        });
+    }
+
     useEffect(() => { 
         getUserSession();
 
@@ -101,7 +109,7 @@ export default function Topbar() {
                         <span className='user-username-container__username'> { currentUsername } </span>
                     </div>
                 </div>
-                <div className='user-related-container__logout-prompt-container'>
+                <div onClick={ logout } className='user-related-container__logout-prompt-container'>
                     <i className="fas fa-sign-out-alt logout-prompt-container__svg"></i>
                 </div>
             </div>

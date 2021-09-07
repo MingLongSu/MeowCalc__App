@@ -214,7 +214,7 @@ app.post('/get-user-table', (req, res) => {
     const id = req.body.id;
 
     const selectUserTable = "SELECT historyDest FROM history_dests WHERE id = ?;"; 
-                           // "SELECT username, lastLogin, profilePicture FROM users WHERE id = ?;";
+
     meowcalc_auth_db.query(selectUserTable, [id], (err, result) => { 
         if (err) { 
             res.send({ err: err });
@@ -243,6 +243,10 @@ app.post('/history-add-calculation', (req, res) => {
             console.log('Updated');
         }
     }); 
+});
+
+app.get('/logout', (req, res) => { 
+    //res.req.cookies('userId', { expires: new Date(0) })
 });
 
 app.listen(3001, () => { 
